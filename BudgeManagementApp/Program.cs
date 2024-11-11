@@ -2,49 +2,66 @@
 using System.Diagnostics.CodeAnalysis;
 
 Console.WriteLine("Hello to Budget App");
-Console.WriteLine("Main Menu\n===================");
-Console.WriteLine("Please select your need things:");
-Console.WriteLine("1)Add an Expense\n2)View Expense\n3)Calculate Total Expense");
-
-int selectWork = Convert.ToInt16(Console.ReadLine());
+int selectWork;
+welcomeApp();
 List<Expense> expenses = new List<Expense>();
 
-switch (selectWork)
+do
 {
-    case 1:
-        do
-        {
-            Console.WriteLine("Enter your expense name");
-            string exName = Console.ReadLine();
-
-            Console.WriteLine("Enter your price amount expense name");
-            double priceAmount;
-            while (!double.TryParse(Console.ReadLine(), out priceAmount))
+    switch (selectWork)
+    {
+        case 1:
+            do
             {
-                Console.WriteLine("Invalid double input, please try again");
+                Console.WriteLine("Enter your expense name");
+                string exName = Console.ReadLine();
+
+                Console.WriteLine("Enter your price amount expense name");
+                double priceAmount;
+                while (!double.TryParse(Console.ReadLine(), out priceAmount))
+                {
+                    Console.WriteLine("Invalid double input, please try again");
+                }
+
+                AddExpense(exName, priceAmount);
+
+                Console.WriteLine("Do you need more add expenses?\n1) Yes\n2) No");
             }
+            while (Convert.ToInt16(Console.ReadLine()) == 1);
+            welcomeApp();
+            break;
 
-            AddExpense(exName, priceAmount);
+        case 2:
+            ViewExpenses();
+            welcomeApp();
+            break;
 
-            Console.WriteLine("Do you need more add expenses?\n1) Yes\n2) No");
-        }
-        while (Convert.ToInt16(Console.ReadLine()) == 1);
-        break;
+        case 3:
+            TotalExpenses();
+            welcomeApp();
+            break;
 
-    case 2:
-        ViewExpenses();
-        break;
+        case 4:
+            Environment.Exit(0);
+            break;
 
-    case 3:
-        TotalExpenses();
-        break;
-    default:
-        Console.WriteLine("We are somethings wronge to your input");
-        break;
+        default:
+            Console.WriteLine("We are somethings wronge to your input");
+            break;
+    }
 }
+while (selectWork != 4);
 
 
 // methods of budget app
+void welcomeApp()
+{
+    Console.WriteLine("Main Menu\n===================");
+    Console.WriteLine("Please select your need things:");
+    Console.WriteLine("1)Add an Expense\n2)View Expense\n3)Calculate Total Expense\n4)Exit app");
+    selectWork = Convert.ToInt16(Console.ReadLine());
+
+}
 void AddExpense(string exName, double priceAmount)
 {
     Expense newExpense = new Expense();
@@ -61,11 +78,11 @@ void ViewExpenses()
     {
         Console.WriteLine("Your name expense details are below\n" +
             "The Name is: {0}\n" +
-            "The Price Amount is: {1}\n" +
-            "The Date Recorded is: {3}\n"
+            "The Price Amount is: {1:C}\n" +
+            "The Date Recorded is: {2}\n"
             , expense.Name, expense.PriceAmount, expense.Date);
     }
-    Console.WriteLine("==================\nEnd of your expenses list");
+    Console.WriteLine("==================\nEnd of your expenses list\n");
 }
 void TotalExpenses()
 {
